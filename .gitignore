@@ -1,0 +1,36 @@
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# Общие исключения OS и IDE
+.DS_Store
+Thumbs.db
+
+# Gradle
+.gradle/
+build/
+*/build/
+!gradle-wrapper.jar
+.gradle-cache/
+local.properties
+
+# Android/IntelliJ IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Misc
+/out/
+captures/
+test-results/
+*.log

@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">weatherApp</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="sign_up">Регистрация</string>
+    <string name="sign_in">Вход</string>
+
+    <string name="username">Логин</string>
+
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Подтверждение пароля</string>
+
+    <string name="back">Назад</string>
+
+    <string name="welcome_message">Добро пожаловать в приложение Погода, здесь вы сможете отслеживать погоду своих локаций!</string>
+
+    <string name="account_icon_desc">Account Icon</string>
+    <string name="light_mode_icon_desc">Light Mode Icon</string>
+
+    <string name="weather">Погода</string>
+    <string name="search">Поиск</string>
+    <string name="profile">Профиль</string>
+
+    <string name="account">Профиль</string>
+    <string name="go_to_welcome">Go to WelcomeScreen</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="light_mode">Light Mode</string>
+    <string name="hello_user">Привет, user!</string>
+    <string name="track_info">You track: 6 locations from 3 different countries!</string>
+    <string name="weather_api">Данные взяты из OpenWeatherAPI</string>
+
+    <string name="search_placeholder">Поиск новых локаций</string>
+    <string name="search_icon_desc">Search Icon</string>
+    <string name="add_location">Добавить</string>
+
+    <string name="country">Страна:</string>
+    <string name="state">Регион:</string>
+    <string name="add">Добавить</string>
+    <string name="add_icon_desc">Add Icon</string>
+
+    <string name="clear_text">Clear Text</string>
+    <string name="no_results_found">Ничего не найдено :(</string>
+    <string name="error_message">Возникла ошибка</string>
+    <string name="refresh">Обновить</string>
+    <string name="refresh_desc">Refresh Icon</string>
+</resources>
