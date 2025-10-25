@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,16 +20,15 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp.R
+import com.example.weatherapp.ui.theme.ThemeState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountScreen(
     navController: NavHostController,
-    onToggleTheme: (Boolean) -> Unit
+    onToggleTheme: () -> Unit
 ) {
     val themeColor = colorResource(id = R.color.account_theme_color)
-
-    var isDarkMode by rememberSaveable { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -60,14 +58,11 @@ fun AccountScreen(
                 },
                 actions = {
                     IconButton(
-                        onClick = {
-                            isDarkMode = !isDarkMode
-                            onToggleTheme(isDarkMode)
-                        }
+                        onClick = onToggleTheme
                     ) {
                         Icon(
-                            imageVector = if (isDarkMode) Icons.Filled.DarkMode else Icons.Filled.LightMode,
-                            contentDescription = if (isDarkMode) stringResource(R.string.dark_mode) else stringResource(R.string.light_mode),
+                            imageVector = if (ThemeState.isDarkTheme) Icons.Filled.DarkMode else Icons.Filled.LightMode,
+                            contentDescription = if (ThemeState.isDarkTheme) stringResource(R.string.dark_mode) else stringResource(R.string.light_mode),
                             tint = themeColor
                         )
                     }

@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -19,29 +16,30 @@ import androidx.navigation.compose.*
 import com.example.weatherapp.BottomNavItem
 import com.example.weatherapp.R
 import com.example.weatherapp.WeatherContent
+import com.example.weatherapp.ui.theme.ThemeState
 
 @Composable
-fun MainScreen(navController: NavHostController = rememberNavController(), onToggleTheme: () -> Unit) {
-    var isDarkMode by rememberSaveable { mutableStateOf(false) }
+fun MainScreen(navController: NavHostController) {
+    val onThemeChange = { ThemeState.isDarkTheme = !ThemeState.isDarkTheme }
+    val bottomNavController = rememberNavController()
 
     Scaffold(
-        bottomBar = { WeatherBottomNavigation(navController) }
+        bottomBar = { WeatherBottomNavigation(bottomNavController) }
     ) { innerPadding ->
         NavHost(
-            navController = navController,
+            navController = bottomNavController,
             startDestination = BottomNavItem.Weather.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(BottomNavItem.Weather.route) { WeatherContent(navController) }
-            composable(BottomNavItem.Search.route) { SearchScreen(navController) }
+            composable(BottomNavItem.Weather.route) { WeatherContent(bottomNavController) }
+            composable(BottomNavItem.Search.route) { SearchScreen(bottomNavController) }
             composable(BottomNavItem.Profile.route) {
                 AccountScreen(
                     navController = navController,
-                    onToggleTheme = { isDarkMode = it }
+                    onToggleTheme = onThemeChange
                 )
             }
-            composable("weather_info") { WeatherDetailsScreen(navController) }
-            composable("welcome") { WelcomeScreen(navController) }
+            composable("weather_info") { WeatherDetailsScreen(bottomNavController) }
         }
     }
 }
@@ -86,6 +84,6 @@ fun WeatherBottomNavigation(navController: NavHostController) {
 @Composable
 fun PreviewMainScreen() {
     MaterialTheme {
-        MainScreen(onToggleTheme = {})
+        MainScreen(navController = rememberNavController())
     }
 }

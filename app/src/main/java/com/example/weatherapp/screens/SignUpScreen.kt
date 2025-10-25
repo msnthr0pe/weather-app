@@ -120,3 +120,4 @@ fun PreviewSignUpScreen() {
         SignUpScreen(navController = rememberNavController())
     }
 }
+
