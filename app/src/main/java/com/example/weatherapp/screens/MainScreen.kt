@@ -16,9 +16,10 @@ import androidx.navigation.compose.*
 import com.example.weatherapp.BottomNavItem
 import com.example.weatherapp.R
 import com.example.weatherapp.ui.theme.ThemeState
+import com.example.weatherapp.viewmodel.WeatherViewModel
 
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, weatherViewModel: WeatherViewModel) {
 
     val onThemeChange = { ThemeState.isDarkTheme = !ThemeState.isDarkTheme }
 
@@ -35,19 +36,20 @@ fun MainScreen(navController: NavHostController) {
         ) {
             // Главный экран с погодой
             composable(BottomNavItem.Weather.route) {
-                WeatherContent(navController = bottomNavController)
+                WeatherContent(navController = bottomNavController, weatherViewModel = weatherViewModel)
             }
 
             // Экран поиска
             composable(BottomNavItem.Search.route) {
-                SearchScreen(bottomNavController)
+                SearchScreen(navController = bottomNavController, weatherViewModel = weatherViewModel)
             }
 
             // Экран профиля (account)
             composable(BottomNavItem.Profile.route) {
                 AccountScreen(
                     navController = navController,
-                    onToggleTheme = onThemeChange
+                    onToggleTheme = onThemeChange,
+                    weatherViewModel = weatherViewModel
                 )
             }
 
@@ -116,6 +118,6 @@ fun WeatherBottomNavigation(navController: NavHostController) {
 @Composable
 fun PreviewMainScreen() {
     MaterialTheme {
-        MainScreen(navController = rememberNavController())
+        MainScreen(navController = rememberNavController(), weatherViewModel = androidx.lifecycle.viewmodel.compose.viewModel())
     }
 }

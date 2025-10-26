@@ -28,18 +28,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp.R
 import com.example.weatherapp.viewmodel.SearchUiState
 import com.example.weatherapp.viewmodel.SearchViewModel
+import com.example.weatherapp.viewmodel.WeatherViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SearchScreen(
     navController: NavHostController,
-    onAddLocation: (String) -> Unit = {},
-    viewModel: SearchViewModel = viewModel()
+    weatherViewModel: WeatherViewModel,
+    searchViewModel: SearchViewModel = viewModel(),
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var query by remember { mutableStateOf("") }
 
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by searchViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -50,7 +51,7 @@ fun SearchScreen(
             value = query,
             onValueChange = {
                 query = it
-                viewModel.onSearchQueryChanged(it)
+                searchViewModel.onSearchQueryChanged(it)
             },
             shape = RoundedCornerShape(50),
             placeholder = {
@@ -72,7 +73,7 @@ fun SearchScreen(
                     IconButton(
                         onClick = {
                             query = ""
-                            viewModel.onSearchQueryChanged("")
+                            searchViewModel.onSearchQueryChanged("")
                             keyboardController?.hide()
                         }
                     ) {
@@ -94,7 +95,7 @@ fun SearchScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        when (uiState) {
+        when (val state = uiState) {
             is SearchUiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -107,7 +108,7 @@ fun SearchScreen(
             }
 
             is SearchUiState.Success -> {
-                val locations = (uiState as SearchUiState.Success).data
+                val locations = state.data
                 if (locations.isEmpty() && query.isNotEmpty()) {
                     NoResultsPlaceholder()
                 } else {
@@ -119,9 +120,8 @@ fun SearchScreen(
                             LocationCard(
                                 city = location.name,
                                 country = location.country,
-                                // state может быть null
                                 state = location.state ?: "Unknown",
-                                onAddClick = { onAddLocation(location.name) }
+                                onAddClick = { weatherViewModel.addCity(location) }
                             )
                         }
                     }
@@ -129,10 +129,10 @@ fun SearchScreen(
             }
 
             is SearchUiState.Error -> {
-                val errorMessage = (uiState as SearchUiState.Error).message
+                val errorMessage = state.message
                 ErrorPlaceholder(
                     message = errorMessage,
-                    onRetry = { viewModel.retryLastQuery() }
+                    onRetry = { searchViewModel.retryLastQuery() }
                 )
             }
         }
@@ -174,6 +174,9 @@ fun ErrorPlaceholder(message: String, onRetry: () -> Unit) {
 @Composable
 fun PreviewSearchScreen() {
     MaterialTheme {
-        SearchScreen(navController = rememberNavController())
+        SearchScreen(
+            navController = rememberNavController(),
+            weatherViewModel = viewModel()
+        )
     }
 }

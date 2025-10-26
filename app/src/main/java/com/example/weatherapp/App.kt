@@ -3,6 +3,7 @@ package com.example.weatherapp
 import SignUpScreen
 import WeatherDetailsScreen
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,11 +13,13 @@ import com.example.weatherapp.screens.SearchScreen
 import com.example.weatherapp.screens.SignInScreen
 import com.example.weatherapp.screens.WelcomeScreen
 import com.example.weatherapp.ui.theme.ThemeState
+import com.example.weatherapp.viewmodel.WeatherViewModel
 
 @Composable
 fun MyApp() {
     val navController = rememberNavController()
     val onToggleTheme = { ThemeState.isDarkTheme = !ThemeState.isDarkTheme }
+    val weatherViewModel: WeatherViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "welcome") {
         composable("welcome") {
@@ -30,7 +33,8 @@ fun MyApp() {
         }
         composable("home") {
             MainScreen(
-                navController = navController
+                navController = navController,
+                weatherViewModel = weatherViewModel
             )
         }
         composable("weatherDetails/{city}/{country}/{temperature}/{description}/{feelsLike}") { backStackEntry ->
@@ -50,7 +54,10 @@ fun MyApp() {
             )
         }
         composable("search") {
-            SearchScreen(navController)
+            SearchScreen(
+                navController = navController,
+                weatherViewModel = weatherViewModel
+            )
         }
     }
 }

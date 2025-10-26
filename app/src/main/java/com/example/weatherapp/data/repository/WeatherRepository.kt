@@ -1,13 +1,17 @@
-// data/repository/WeatherRepository.kt
-
 package com.example.weatherapp.data.repository
 
 import com.example.weatherapp.data.api.LocationResponse
 import com.example.weatherapp.data.api.RetrofitClient
+import com.example.weatherapp.data.api.WeatherResponse
 
 class WeatherRepository {
+    private val api = RetrofitClient.api
+
     suspend fun searchCities(city: String, apiKey: String): List<LocationResponse> {
-        // Если нужно, можно отлавливать Exception и обрабатывать отдельно
-        return RetrofitClient.api.searchCities(city, limit = 10, apiKey = apiKey)
+        return api.searchCities(city, limit = 10, apiKey = apiKey)
+    }
+
+    suspend fun getWeather(lat: Double, lon: Double, apiKey: String): WeatherResponse {
+        return api.getWeather(lat, lon, apiKey)
     }
 }
