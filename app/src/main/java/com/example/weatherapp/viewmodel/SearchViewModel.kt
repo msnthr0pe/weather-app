@@ -20,6 +20,9 @@ class SearchViewModel : ViewModel() {
 
     private val _searchQuery = MutableStateFlow("")
 
+    private val _searchHistory = MutableStateFlow<List<String>>(emptyList())
+    val searchHistory: StateFlow<List<String>> = _searchHistory
+
     init {
         viewModelScope.launch {
             _searchQuery
@@ -34,8 +37,9 @@ class SearchViewModel : ViewModel() {
                             try {
                                 val result = repository.searchCities(query, apiKey)
                                 if (result.isEmpty()) {
-                                    emit(SearchUiState.Error("No results found"))
+                                    emit(SearchUiState.Success(emptyList())) // Show history instead of error
                                 } else {
+                                    addQueryToHistory(query)
                                     emit(SearchUiState.Success(result))
                                 }
                             } catch (e: Exception) {
@@ -61,6 +65,13 @@ class SearchViewModel : ViewModel() {
     fun clearSearch() {
         _searchQuery.value = ""
         _uiState.value = SearchUiState.Success(emptyList())
+    }
+
+    private fun addQueryToHistory(query: String) {
+        val currentHistory = _searchHistory.value.toMutableSet()
+        currentHistory.remove(query.lowercase())
+        currentHistory.add(query.lowercase())
+        _searchHistory.value = currentHistory.toList().reversed()
     }
 }
 

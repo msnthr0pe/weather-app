@@ -1,6 +1,7 @@
 package com.example.weatherapp.screens
 
 import LocationCard
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -43,6 +45,7 @@ fun SearchScreen(
     var query by remember { mutableStateOf("") }
 
     val uiState by searchViewModel.uiState.collectAsState()
+    val history by searchViewModel.searchHistory.collectAsState()
 
     DisposableEffect(Unit) {
         onDispose {
@@ -116,15 +119,12 @@ fun SearchScreen(
             }
 
             is SearchUiState.Success -> {
-                val locations = state.data
-                if (locations.isEmpty() && query.isNotEmpty()) {
-                    NoResultsPlaceholder()
-                } else {
+                if (state.data.isNotEmpty()) {
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(locations) { location ->
+                        items(state.data) { location ->
                             LocationCard(
                                 city = location.russianName,
                                 country = location.country,
@@ -142,6 +142,13 @@ fun SearchScreen(
                             )
                         }
                     }
+                } else if (query.isBlank() && history.isNotEmpty()) {
+                    SearchHistoryList(history = history) { historyQuery ->
+                        query = historyQuery
+                        searchViewModel.onSearchQueryChanged(historyQuery)
+                    }
+                } else if (query.isNotBlank()) {
+                    NoResultsPlaceholder()
                 }
             }
 
@@ -151,6 +158,27 @@ fun SearchScreen(
                     message = errorMessage,
                     onRetry = { searchViewModel.retryLastQuery() }
                 )
+            }
+        }
+    }
+}
+
+@Composable
+fun SearchHistoryList(history: List<String>, onItemClick: (String) -> Unit) {
+    Text("История поиска", style = MaterialTheme.typography.titleMedium)
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyColumn {
+        items(history) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onItemClick(it) }
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.History, contentDescription = "History icon")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(it)
             }
         }
     }
