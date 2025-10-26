@@ -13,7 +13,6 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -38,7 +37,7 @@ fun SearchScreen(
     viewModel: SearchViewModel = viewModel()
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var query by rememberSaveable { mutableStateOf("") }
+    var query by remember { mutableStateOf("") }
 
     val uiState by viewModel.uiState.collectAsState()
 
@@ -49,7 +48,10 @@ fun SearchScreen(
     ) {
         OutlinedTextField(
             value = query,
-            onValueChange = { query = it },
+            onValueChange = {
+                query = it
+                viewModel.onSearchQueryChanged(it)
+            },
             shape = RoundedCornerShape(50),
             placeholder = {
                 Text(
@@ -63,7 +65,6 @@ fun SearchScreen(
             keyboardActions = KeyboardActions(
                 onSearch = {
                     keyboardController?.hide()
-                    viewModel.searchCities(query)
                 }
             ),
             trailingIcon = {
@@ -71,8 +72,8 @@ fun SearchScreen(
                     IconButton(
                         onClick = {
                             query = ""
+                            viewModel.onSearchQueryChanged("")
                             keyboardController?.hide()
-                            viewModel.searchCities("")
                         }
                     ) {
                         Icon(
@@ -107,7 +108,7 @@ fun SearchScreen(
 
             is SearchUiState.Success -> {
                 val locations = (uiState as SearchUiState.Success).data
-                if (locations.isEmpty()) {
+                if (locations.isEmpty() && query.isNotEmpty()) {
                     NoResultsPlaceholder()
                 } else {
                     LazyColumn(
