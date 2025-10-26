@@ -13,29 +13,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-
-data class MockCityWeather(
-    val city: String,
-    val country: String,
-    val temperature: String,
-    val description: String,
-    val feelsLike: String
-)
+import com.example.weatherapp.viewmodel.WeatherViewModel
 
 @Composable
-fun WeatherContent(navController: NavHostController) {
-    val cities = listOf(
-        MockCityWeather("Moscow", "RU", "7°C", "Clear sky", "Feels like 2°C"),
-        MockCityWeather("London", "UK", "12°C", "Cloudy", "Feels like 10°C"),
-        MockCityWeather("Tokyo", "JP", "18°C", "Sunny", "Feels like 17°C"),
-        MockCityWeather("New York", "US", "14°C", "Rainy", "Feels like 12°C"),
-        MockCityWeather("Paris", "FR", "9°C", "Fog", "Feels like 7°C")
-    )
-
-    var currentIndex by remember { mutableStateOf(0) }
-    val currentCity = cities[currentIndex]
+fun WeatherContent(navController: NavHostController, weatherViewModel: WeatherViewModel = viewModel()) {
+    val currentCity = weatherViewModel.currentCity
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -71,9 +56,7 @@ fun WeatherContent(navController: NavHostController) {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     IconButton(
-                        onClick = {
-                            currentIndex = if (currentIndex > 0) currentIndex - 1 else cities.lastIndex
-                        },
+                        onClick = { weatherViewModel.onPreviousCity() },
                         modifier = Modifier.size(30.dp),
                         enabled = true
                     ) {
@@ -102,9 +85,7 @@ fun WeatherContent(navController: NavHostController) {
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IconButton(
-                        onClick = {
-                            currentIndex = if (currentIndex < cities.lastIndex) currentIndex + 1 else 0
-                        },
+                        onClick = { weatherViewModel.onNextCity() },
                         modifier = Modifier.size(30.dp),
                         enabled = true
                     ) {
