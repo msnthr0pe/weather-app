@@ -126,7 +126,7 @@ fun SearchScreen(
                     ) {
                         items(locations) { location ->
                             LocationCard(
-                                city = location.name,
+                                city = location.russianName,
                                 country = location.country,
                                 state = location.state ?: "Unknown",
                                 onAddClick = {

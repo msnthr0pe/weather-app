@@ -11,7 +11,7 @@ class WeatherRepository {
         return api.searchCities(city, limit = 10, apiKey = apiKey)
     }
 
-    suspend fun getWeather(lat: Double, lon: Double, apiKey: String): WeatherResponse {
-        return api.getWeather(lat, lon, apiKey)
+    suspend fun getWeather(lat: Double, lon: Double, apiKey: String, lang: String = "ru"): WeatherResponse {
+        return api.getWeather(lat, lon, apiKey, lang = lang)
     }
 }

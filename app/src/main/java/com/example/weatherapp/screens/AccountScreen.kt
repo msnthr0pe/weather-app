@@ -138,7 +138,7 @@ fun AccountScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Temperature: ${currentCity.temperature}",
+                    text = "Температура: ${currentCity.temperature}",
                     color = themeColor,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
@@ -154,7 +154,7 @@ fun AccountScreen(
 
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = "Feels like ${currentCity.feelsLike}",
+                    text = currentCity.feelsLike,
                     color = themeColor,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center

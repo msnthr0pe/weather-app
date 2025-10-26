@@ -51,7 +51,7 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun addCity(location: LocationResponse) {
-        val cityExists = _cities.any { it.city.equals(location.name, ignoreCase = true) }
+        val cityExists = _cities.any { it.city.equals(location.russianName, ignoreCase = true) }
         if (cityExists) {
             return
         }
@@ -60,11 +60,11 @@ class WeatherViewModel : ViewModel() {
             try {
                 val weatherResponse = repository.getWeather(location.lat, location.lon, apiKey)
                 val newCity = MockCityWeather(
-                    city = location.name,
+                    city = location.russianName,
                     country = location.country,
                     temperature = "${weatherResponse.main.temp.toInt()}°C",
                     description = weatherResponse.weather.firstOrNull()?.description ?: "",
-                    feelsLike = "Feels like ${weatherResponse.main.feelsLike.toInt()}°C"
+                    feelsLike = "Ощущается как ${weatherResponse.main.feelsLike.toInt()}°C"
                 )
                 _cities.add(newCity)
                 currentIndex = _cities.lastIndex

@@ -8,10 +8,18 @@ import com.google.gson.annotations.SerializedName
  */
 data class LocationResponse(
     val name: String,
+    @SerializedName("local_names") val localNames: LocalNames? = null,
     val country: String,
     val state: String? = null,
     val lat: Double,
     val lon: Double
+) {
+    val russianName: String
+        get() = localNames?.ru ?: name
+}
+
+data class LocalNames(
+    val ru: String? = null
 )
 
 /**

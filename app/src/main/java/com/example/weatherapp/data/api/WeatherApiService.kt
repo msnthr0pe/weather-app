@@ -17,13 +17,14 @@ interface WeatherApiService {
 
     /**
      * Эндпоинт для получения погоды по координатам:
-     * https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=API_KEY
+     * https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=API_KEY&lang=ru
      */
     @GET("data/2.5/weather")
     suspend fun getWeather(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
         @Query("appid") apiKey: String,
-        @Query("units") units: String = "metric" // Чтобы температура была в °C
+        @Query("units") units: String = "metric", // Чтобы температура была в °C
+        @Query("lang") lang: String = "ru" // Чтобы описание было на русском
     ): WeatherResponse
 }
