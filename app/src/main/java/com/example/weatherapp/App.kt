@@ -33,22 +33,14 @@ fun MyApp() {
                 navController = navController
             )
         }
-        composable("weatherDetails") {
-            WeatherDetailsScreen(navController)
-        }
-        composable("search") {
-            SearchScreen(navController)
-        }
-        composable(
-            "account_screen/{city}/{country}/{temperature}/{description}/{feelsLike}"
-        ) { backStackEntry ->
+        composable("weatherDetails/{city}/{country}/{temperature}/{description}/{feelsLike}") { backStackEntry ->
             val city = backStackEntry.arguments?.getString("city") ?: ""
             val country = backStackEntry.arguments?.getString("country") ?: ""
             val temperature = backStackEntry.arguments?.getString("temperature") ?: ""
             val description = backStackEntry.arguments?.getString("description") ?: ""
             val feelsLike = backStackEntry.arguments?.getString("feelsLike") ?: ""
 
-            AccountScreen(
+            WeatherDetailsScreen(
                 navController = navController,
                 city = city,
                 country = country,
@@ -57,6 +49,8 @@ fun MyApp() {
                 feelsLike = feelsLike
             )
         }
-
+        composable("search") {
+            SearchScreen(navController)
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.weatherapp
+package com.example.weatherapp.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -137,7 +137,7 @@ fun WeatherContent(navController: NavHostController) {
                 OutlinedButton(
                     onClick = {
                         navController.navigate(
-                            "account_screen/${currentCity.city}/${currentCity.country}/${currentCity.temperature}/${currentCity.description}/${currentCity.feelsLike}"
+                            "weather_details_screen/${currentCity.city}/${currentCity.country}/${currentCity.temperature}/${currentCity.description}/${currentCity.feelsLike}"
                         )
                     },
                     modifier = Modifier

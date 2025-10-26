@@ -15,7 +15,14 @@ import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WeatherDetailsScreen(navController: NavHostController) {
+fun WeatherDetailsScreen(
+    navController: NavHostController,
+    city: String,
+    country: String,
+    temperature: String,
+    description: String,
+    feelsLike: String
+) {
 
     Scaffold(
         topBar = {
@@ -65,7 +72,7 @@ fun WeatherDetailsScreen(navController: NavHostController) {
         ) {
             // Название города и страны
             Text(
-                text = "Moscow, RU",
+                text = "$city, $country",
                 color = Color(0xFF6E4A5C),
                 style = MaterialTheme.typography.displayMedium,
                 textAlign = TextAlign.Center
@@ -73,7 +80,7 @@ fun WeatherDetailsScreen(navController: NavHostController) {
 
             // Название региона
             Text(
-                text = "Moscow Oblast",
+                text = description,
                 color = Color(0xFF6E4A5C),
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
@@ -86,8 +93,8 @@ fun WeatherDetailsScreen(navController: NavHostController) {
             )
 
             // Первый блок параметров
-            InfoLine("Temperature: 7")
-            InfoLine("Feels like: 2")
+            InfoLine("Temperature: $temperature")
+            InfoLine("Feels like: $feelsLike")
             InfoLine("Min. temperature: 2")
             InfoLine("Max. temperature: 8")
 
@@ -137,6 +144,13 @@ fun InfoLine(text: String) {
 @Composable
 fun PreviewWeatherDetailsScreen() {
     MaterialTheme {
-        WeatherDetailsScreen(navController = rememberNavController())
+        WeatherDetailsScreen(
+            navController = rememberNavController(),
+            city = "Moscow",
+            country = "RU",
+            temperature = "7°C",
+            description = "Clear sky",
+            feelsLike = "Feels like 2°C"
+        )
     }
 }

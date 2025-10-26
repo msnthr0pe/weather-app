@@ -15,7 +15,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.example.weatherapp.BottomNavItem
 import com.example.weatherapp.R
-import com.example.weatherapp.WeatherContent
 import com.example.weatherapp.ui.theme.ThemeState
 
 @Composable
@@ -36,7 +35,7 @@ fun MainScreen(navController: NavHostController) {
         ) {
             // Главный экран с погодой
             composable(BottomNavItem.Weather.route) {
-                WeatherContent(navController = navController)
+                WeatherContent(navController = bottomNavController)
             }
 
             // Экран поиска
@@ -59,7 +58,7 @@ fun MainScreen(navController: NavHostController) {
 
             // Новый маршрут — переход с MainScreen при нажатии "more info"
             composable(
-                "account_screen/{city}/{country}/{temperature}/{description}/{feelsLike}"
+                "weather_details_screen/{city}/{country}/{temperature}/{description}/{feelsLike}"
             ) { backStackEntry ->
                 val city = backStackEntry.arguments?.getString("city") ?: ""
                 val country = backStackEntry.arguments?.getString("country") ?: ""
@@ -67,19 +66,15 @@ fun MainScreen(navController: NavHostController) {
                 val description = backStackEntry.arguments?.getString("description") ?: ""
                 val feelsLike = backStackEntry.arguments?.getString("feelsLike") ?: ""
 
-                AccountScreen(
-                    navController = navController,
+                WeatherDetailsScreen(
+                    navController = bottomNavController,
                     city = city,
                     country = country,
                     temperature = temperature,
                     description = description,
-                    feelsLike = feelsLike,
-                    onToggleTheme = onThemeChange
+                    feelsLike = feelsLike
                 )
             }
-
-            // Дополнительный экран
-            composable("weather_info") { WeatherDetailsScreen(bottomNavController) }
         }
     }
 }
@@ -97,7 +92,7 @@ fun WeatherBottomNavigation(navController: NavHostController) {
     ) {
         items.forEach { item ->
             val isSelected = currentRoute == item.route ||
-                    (item.route == BottomNavItem.Weather.route && currentRoute == "weather_info")
+                    (item.route == BottomNavItem.Weather.route && currentRoute?.startsWith("weather_details_screen") == true)
 
             NavigationBarItem(
                 selected = isSelected,
