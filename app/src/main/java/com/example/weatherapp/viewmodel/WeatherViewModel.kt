@@ -17,11 +17,11 @@ class WeatherViewModel : ViewModel() {
     private val apiKey = "20f4c7cb2f77ea40affe9cf3b27f38cc"
 
     private val _cities = listOf(
-        MockCityWeather("Moscow", "RU", "7°C", "Clear sky", "Feels like 2°C"),
-        MockCityWeather("London", "UK", "12°C", "Cloudy", "Feels like 10°C"),
-        MockCityWeather("Tokyo", "JP", "18°C", "Sunny", "Feels like 17°C"),
-        MockCityWeather("New York", "US", "14°C", "Rainy", "Feels like 12°C"),
-        MockCityWeather("Paris", "FR", "9°C", "Fog", "Feels like 7°C")
+        MockCityWeather("Москва", "RU", "7°C", "Чистое небо", "Ощущается как 2°C"),
+        MockCityWeather("Лондон", "UK", "12°C", "Облачно", "Ощущается как 10°C"),
+        MockCityWeather("Токио", "JP", "18°C", "Солнечно", "Ощущается как 17°C"),
+        MockCityWeather("Нью-Йорк", "US", "14°C", "Дождливо", "Ощущается как 12°C"),
+        MockCityWeather("Париж", "FR", "9°C", "Туман", "Ощущается как 7°C")
     ).toMutableStateList()
 
     val cities: List<MockCityWeather> = _cities

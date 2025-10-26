@@ -32,6 +32,35 @@ fun AccountScreen(
 ) {
     val themeColor = colorResource(id = R.color.account_theme_color)
     val currentCity = weatherViewModel.currentCity
+    var showDialog by remember { mutableStateOf(false) }
+    var newPassword by remember { mutableStateOf("") }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            title = { Text(stringResource(R.string.change_password)) },
+            text = {
+                TextField(
+                    value = newPassword,
+                    onValueChange = { newPassword = it },
+                    label = { Text(stringResource(R.string.new_password)) }
+                )
+            },
+            confirmButton = {
+                Button(onClick = {
+                    // Mock password change
+                    showDialog = false
+                }) {
+                    Text(stringResource(R.string.ok))
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDialog = false }) {
+                    Text(stringResource(R.string.cancel))
+                }
+            }
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -130,6 +159,11 @@ fun AccountScreen(
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
+
+                Spacer(modifier = Modifier.height(20.dp))
+                Button(onClick = { showDialog = true }) {
+                    Text(stringResource(R.string.change_password))
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(

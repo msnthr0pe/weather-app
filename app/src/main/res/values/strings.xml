@@ -43,4 +43,9 @@
     <string name="error_message">Возникла ошибка</string>
     <string name="refresh">Обновить</string>
     <string name="refresh_desc">Refresh Icon</string>
+
+    <string name="change_password">Сменить пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="ok">ОК</string>
+    <string name="cancel">Отмена</string>
 </resources>
