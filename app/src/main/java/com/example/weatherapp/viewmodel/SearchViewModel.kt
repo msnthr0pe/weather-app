@@ -57,6 +57,11 @@ class SearchViewModel : ViewModel() {
     fun retryLastQuery() {
         onSearchQueryChanged(_searchQuery.value)
     }
+
+    fun clearSearch() {
+        _searchQuery.value = ""
+        _uiState.value = SearchUiState.Success(emptyList())
+    }
 }
 
 sealed class SearchUiState {

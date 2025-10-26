@@ -44,6 +44,12 @@ fun SearchScreen(
 
     val uiState by searchViewModel.uiState.collectAsState()
 
+    DisposableEffect(Unit) {
+        onDispose {
+            searchViewModel.clearSearch()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
