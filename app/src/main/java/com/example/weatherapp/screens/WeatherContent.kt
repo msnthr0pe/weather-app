@@ -128,7 +128,7 @@ fun WeatherContent(navController: NavHostController, weatherViewModel: WeatherVi
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = Color(0xFF6E4A5C)),
                     enabled = true
                 ) {
-                    Text(text = "more info", color = Color(0xFF6E4A5C))
+                    Text(text = "Подробнее", color = Color(0xFF6E4A5C))
                 }
             }
         }

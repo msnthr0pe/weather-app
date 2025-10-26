@@ -36,7 +36,7 @@ fun WeatherDetailsScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "Weather",
+                            text = "Погода",
                             color = Color(0xFF6E4A5C),
                             textAlign = TextAlign.Center
                         )
@@ -99,10 +99,10 @@ fun WeatherDetailsScreen(
             )
 
             // Первый блок параметров
-            InfoLine("Temperature: $temperature")
-            InfoLine("Feels like: $feelsLike")
-            InfoLine("Min. temperature: 2")
-            InfoLine("Max. temperature: 8")
+            InfoLine("Температура: $temperature")
+            InfoLine(": $feelsLike")
+            InfoLine("Мин. температура: 2")
+            InfoLine("Макс. температура: 8")
 
             Divider(modifier = Modifier
                 .width(320.dp)
@@ -110,11 +110,11 @@ fun WeatherDetailsScreen(
             )
 
             // Второй блок параметров
-            InfoLine("Pressure: 1014 hPa")
-            InfoLine("Humidity: 90%")
-            InfoLine("Visibility: 10 km")
-            InfoLine("Wind speed: 5 m/s")
-            InfoLine("Clouds: 0%")
+            InfoLine("Давление: 1014 hPa")
+            InfoLine("Влажность: 90%")
+            InfoLine("Видимость: 10 km")
+            InfoLine("Скорость ветра: 5 m/s")
+            InfoLine("Облачность: 20%")
 
             Divider(modifier = Modifier
                 .width(320.dp)
@@ -122,8 +122,8 @@ fun WeatherDetailsScreen(
             )
 
             // Третий блок параметров
-            InfoLine("Sunrise: 7:40")
-            InfoLine("Sunset: 17:45")
+            InfoLine("Восход: 7:40")
+            InfoLine("Закат: 17:45")
         }
     }
 }
