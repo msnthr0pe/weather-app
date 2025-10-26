@@ -43,7 +43,7 @@ class SearchViewModel : ViewModel() {
                                     emit(SearchUiState.Success(result))
                                 }
                             } catch (e: Exception) {
-                                emit(SearchUiState.Error("Error occurred: ${e.message}"))
+                                emit(SearchUiState.Error("Нет сети"))
                             }
                         }
                     }
