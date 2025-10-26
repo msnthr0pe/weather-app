@@ -100,7 +100,7 @@ fun WeatherDetailsScreen(
 
             // Первый блок параметров
             InfoLine("Температура: $temperature")
-            InfoLine(": $feelsLike")
+            InfoLine(feelsLike)
             InfoLine("Мин. температура: 2")
             InfoLine("Макс. температура: 8")
 
