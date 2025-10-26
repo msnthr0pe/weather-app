@@ -51,6 +51,11 @@ class WeatherViewModel : ViewModel() {
     }
 
     fun addCity(location: LocationResponse) {
+        val cityExists = _cities.any { it.city.equals(location.name, ignoreCase = true) }
+        if (cityExists) {
+            return
+        }
+
         viewModelScope.launch {
             try {
                 val weatherResponse = repository.getWeather(location.lat, location.lon, apiKey)
