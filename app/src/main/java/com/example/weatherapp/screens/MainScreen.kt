@@ -20,25 +20,65 @@ import com.example.weatherapp.ui.theme.ThemeState
 
 @Composable
 fun MainScreen(navController: NavHostController) {
+
     val onThemeChange = { ThemeState.isDarkTheme = !ThemeState.isDarkTheme }
+
     val bottomNavController = rememberNavController()
 
     Scaffold(
         bottomBar = { WeatherBottomNavigation(bottomNavController) }
     ) { innerPadding ->
+
         NavHost(
             navController = bottomNavController,
             startDestination = BottomNavItem.Weather.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(BottomNavItem.Weather.route) { WeatherContent(bottomNavController) }
-            composable(BottomNavItem.Search.route) { SearchScreen(bottomNavController) }
+            // Главный экран с погодой
+            composable(BottomNavItem.Weather.route) {
+                WeatherContent(navController = navController)
+            }
+
+            // Экран поиска
+            composable(BottomNavItem.Search.route) {
+                SearchScreen(bottomNavController)
+            }
+
+            // Экран профиля (account)
             composable(BottomNavItem.Profile.route) {
                 AccountScreen(
                     navController = navController,
+                    city = "Paris",
+                    country = "FR",
+                    temperature = "9°C",
+                    description = "Fog",
+                    feelsLike = "Feels like 7°C",
                     onToggleTheme = onThemeChange
                 )
             }
+
+            // Новый маршрут — переход с MainScreen при нажатии "more info"
+            composable(
+                "account_screen/{city}/{country}/{temperature}/{description}/{feelsLike}"
+            ) { backStackEntry ->
+                val city = backStackEntry.arguments?.getString("city") ?: ""
+                val country = backStackEntry.arguments?.getString("country") ?: ""
+                val temperature = backStackEntry.arguments?.getString("temperature") ?: ""
+                val description = backStackEntry.arguments?.getString("description") ?: ""
+                val feelsLike = backStackEntry.arguments?.getString("feelsLike") ?: ""
+
+                AccountScreen(
+                    navController = navController,
+                    city = city,
+                    country = country,
+                    temperature = temperature,
+                    description = description,
+                    feelsLike = feelsLike,
+                    onToggleTheme = onThemeChange
+                )
+            }
+
+            // Дополнительный экран
             composable("weather_info") { WeatherDetailsScreen(bottomNavController) }
         }
     }
@@ -47,6 +87,7 @@ fun MainScreen(navController: NavHostController) {
 @Composable
 fun WeatherBottomNavigation(navController: NavHostController) {
     val items = listOf(BottomNavItem.Weather, BottomNavItem.Search, BottomNavItem.Profile)
+
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
@@ -55,7 +96,8 @@ fun WeatherBottomNavigation(navController: NavHostController) {
         containerColor = Color.Transparent
     ) {
         items.forEach { item ->
-            val isSelected = currentRoute == item.route || (item.route == BottomNavItem.Weather.route && currentRoute == "weather_info")
+            val isSelected = currentRoute == item.route ||
+                    (item.route == BottomNavItem.Weather.route && currentRoute == "weather_info")
 
             NavigationBarItem(
                 selected = isSelected,

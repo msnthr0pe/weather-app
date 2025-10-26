@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp.R
@@ -26,7 +25,12 @@ import com.example.weatherapp.ui.theme.ThemeState
 @Composable
 fun AccountScreen(
     navController: NavHostController,
-    onToggleTheme: () -> Unit
+    city: String,
+    country: String,
+    temperature: String,
+    description: String,
+    feelsLike: String,
+    onToggleTheme: () -> Unit = {}
 ) {
     val themeColor = colorResource(id = R.color.account_theme_color)
 
@@ -44,9 +48,7 @@ fun AccountScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            navController.navigate("welcome") {
-                                popUpTo(navController.graph.findStartDestination().id)
-                            }
+                            navController.popBackStack()
                         }
                     ) {
                         Icon(
@@ -57,19 +59,18 @@ fun AccountScreen(
                     }
                 },
                 actions = {
-                    IconButton(
-                        onClick = onToggleTheme
-                    ) {
+                    IconButton(onClick = onToggleTheme) {
                         Icon(
                             imageVector = if (ThemeState.isDarkTheme) Icons.Filled.DarkMode else Icons.Filled.LightMode,
-                            contentDescription = if (ThemeState.isDarkTheme) stringResource(R.string.dark_mode) else stringResource(R.string.light_mode),
+                            contentDescription = if (ThemeState.isDarkTheme)
+                                stringResource(R.string.dark_mode)
+                            else
+                                stringResource(R.string.light_mode),
                             tint = themeColor
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color.Transparent
-                )
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         }
     ) { innerPadding ->
@@ -91,8 +92,8 @@ fun AccountScreen(
                     tint = themeColor,
                     modifier = Modifier.size(100.dp)
                 )
-                Spacer(modifier = Modifier.height(7.dp))
 
+                Spacer(modifier = Modifier.height(12.dp))
                 Box(
                     modifier = Modifier
                         .width(220.dp)
@@ -100,29 +101,38 @@ fun AccountScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = stringResource(R.string.hello_user),
+                        text = "$city, $country",
                         color = themeColor,
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center
                     )
                 }
 
-                Spacer(modifier = Modifier.height(13.dp))
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = stringResource(R.string.track_info),
+                    text = "Temperature: $temperature",
                     color = themeColor,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
                 )
-            }
 
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .align(Alignment.BottomCenter),
-                contentAlignment = Alignment.Center
-            ) {
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = description,
+                    color = themeColor,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+                Text(
+                    text = "Feels like $feelsLike",
+                    color = themeColor,
+                    style = MaterialTheme.typography.bodyLarge,
+                    textAlign = TextAlign.Center
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
                 Text(
                     text = stringResource(R.string.weather_api),
                     style = MaterialTheme.typography.bodyMedium,
@@ -140,6 +150,11 @@ fun PreviewAccountScreen() {
     MaterialTheme {
         AccountScreen(
             navController = rememberNavController(),
+            city = "Paris",
+            country = "FR",
+            temperature = "9°C",
+            description = "Fog",
+            feelsLike = "Feels like 7°C",
             onToggleTheme = {}
         )
     }

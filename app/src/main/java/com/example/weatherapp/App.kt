@@ -39,11 +39,24 @@ fun MyApp() {
         composable("search") {
             SearchScreen(navController)
         }
-        composable("account") {
+        composable(
+            "account_screen/{city}/{country}/{temperature}/{description}/{feelsLike}"
+        ) { backStackEntry ->
+            val city = backStackEntry.arguments?.getString("city") ?: ""
+            val country = backStackEntry.arguments?.getString("country") ?: ""
+            val temperature = backStackEntry.arguments?.getString("temperature") ?: ""
+            val description = backStackEntry.arguments?.getString("description") ?: ""
+            val feelsLike = backStackEntry.arguments?.getString("feelsLike") ?: ""
+
             AccountScreen(
                 navController = navController,
-                onToggleTheme = onToggleTheme
+                city = city,
+                country = country,
+                temperature = temperature,
+                description = description,
+                feelsLike = feelsLike
             )
         }
+
     }
 }
