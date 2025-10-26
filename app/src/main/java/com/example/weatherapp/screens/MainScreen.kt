@@ -47,11 +47,6 @@ fun MainScreen(navController: NavHostController) {
             composable(BottomNavItem.Profile.route) {
                 AccountScreen(
                     navController = navController,
-                    city = "Paris",
-                    country = "FR",
-                    temperature = "9°C",
-                    description = "Fog",
-                    feelsLike = "Feels like 7°C",
                     onToggleTheme = onThemeChange
                 )
             }

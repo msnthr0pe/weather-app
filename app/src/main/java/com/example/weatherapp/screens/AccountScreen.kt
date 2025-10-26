@@ -16,23 +16,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.weatherapp.R
 import com.example.weatherapp.ui.theme.ThemeState
+import com.example.weatherapp.viewmodel.WeatherViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountScreen(
     navController: NavHostController,
-    city: String,
-    country: String,
-    temperature: String,
-    description: String,
-    feelsLike: String,
-    onToggleTheme: () -> Unit = {}
+    onToggleTheme: () -> Unit = {},
+    weatherViewModel: WeatherViewModel = viewModel()
 ) {
     val themeColor = colorResource(id = R.color.account_theme_color)
+    val currentCity = weatherViewModel.currentCity
 
     Scaffold(
         topBar = {
@@ -101,7 +100,7 @@ fun AccountScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "$city, $country",
+                        text = "${currentCity.city}, ${currentCity.country}",
                         color = themeColor,
                         style = MaterialTheme.typography.headlineSmall,
                         textAlign = TextAlign.Center
@@ -110,7 +109,7 @@ fun AccountScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Temperature: $temperature",
+                    text = "Temperature: ${currentCity.temperature}",
                     color = themeColor,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
@@ -118,7 +117,7 @@ fun AccountScreen(
 
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = description,
+                    text = currentCity.description,
                     color = themeColor,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
@@ -126,7 +125,7 @@ fun AccountScreen(
 
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
-                    text = "Feels like $feelsLike",
+                    text = "Feels like ${currentCity.feelsLike}",
                     color = themeColor,
                     style = MaterialTheme.typography.bodyLarge,
                     textAlign = TextAlign.Center
@@ -150,11 +149,6 @@ fun PreviewAccountScreen() {
     MaterialTheme {
         AccountScreen(
             navController = rememberNavController(),
-            city = "Paris",
-            country = "FR",
-            temperature = "9°C",
-            description = "Fog",
-            feelsLike = "Feels like 7°C",
             onToggleTheme = {}
         )
     }
