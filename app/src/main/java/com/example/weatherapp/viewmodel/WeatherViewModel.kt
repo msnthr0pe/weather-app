@@ -72,4 +72,16 @@ class WeatherViewModel : ViewModel() {
             }
         }
     }
+
+    fun removeCity(city: String) {
+        val indexToRemove = _cities.indexOfFirst { it.city.equals(city, ignoreCase = true) }
+        if (indexToRemove != -1) {
+            _cities.removeAt(indexToRemove)
+            if (currentIndex >= indexToRemove && currentIndex > 0) {
+                currentIndex--
+            } else if (_cities.isEmpty()) {
+                currentIndex = 0
+            }
+        }
+    }
 }

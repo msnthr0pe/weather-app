@@ -10,13 +10,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.weatherapp.viewmodel.WeatherViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WeatherDetailsScreen(
     navController: NavHostController,
+    weatherViewModel: WeatherViewModel,
     city: String,
     country: String,
     temperature: String,
@@ -49,7 +52,10 @@ fun WeatherDetailsScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /* TODO: Действие на удаление/очистку */ }) {
+                    IconButton(onClick = {
+                        weatherViewModel.removeCity(city)
+                        navController.popBackStack()
+                    }) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
                             contentDescription = "Delete",
@@ -146,6 +152,7 @@ fun PreviewWeatherDetailsScreen() {
     MaterialTheme {
         WeatherDetailsScreen(
             navController = rememberNavController(),
+            weatherViewModel = viewModel(),
             city = "Moscow",
             country = "RU",
             temperature = "7°C",

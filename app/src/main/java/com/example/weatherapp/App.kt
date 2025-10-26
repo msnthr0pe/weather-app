@@ -46,6 +46,7 @@ fun MyApp() {
 
             WeatherDetailsScreen(
                 navController = navController,
+                weatherViewModel = weatherViewModel,
                 city = city,
                 country = country,
                 temperature = temperature,

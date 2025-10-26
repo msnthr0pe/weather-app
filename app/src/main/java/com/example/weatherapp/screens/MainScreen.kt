@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
@@ -65,6 +66,7 @@ fun MainScreen(navController: NavHostController, weatherViewModel: WeatherViewMo
 
                 WeatherDetailsScreen(
                     navController = bottomNavController,
+                    weatherViewModel = weatherViewModel,
                     city = city,
                     country = country,
                     temperature = temperature,
@@ -118,6 +120,6 @@ fun WeatherBottomNavigation(navController: NavHostController) {
 @Composable
 fun PreviewMainScreen() {
     MaterialTheme {
-        MainScreen(navController = rememberNavController(), weatherViewModel = androidx.lifecycle.viewmodel.compose.viewModel())
+        MainScreen(navController = rememberNavController(), weatherViewModel = viewModel())
     }
 }
