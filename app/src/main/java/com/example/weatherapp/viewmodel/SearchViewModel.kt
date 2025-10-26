@@ -67,6 +67,10 @@ class SearchViewModel : ViewModel() {
         _uiState.value = SearchUiState.Success(emptyList())
     }
 
+    fun clearHistory() {
+        _searchHistory.value = emptyList()
+    }
+
     private fun addQueryToHistory(query: String) {
         val currentHistory = _searchHistory.value.toMutableSet()
         currentHistory.remove(query.lowercase())

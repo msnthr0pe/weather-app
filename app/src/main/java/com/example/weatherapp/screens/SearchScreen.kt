@@ -143,10 +143,14 @@ fun SearchScreen(
                         }
                     }
                 } else if (query.isBlank() && history.isNotEmpty()) {
-                    SearchHistoryList(history = history) { historyQuery ->
-                        query = historyQuery
-                        searchViewModel.onSearchQueryChanged(historyQuery)
-                    }
+                    SearchHistoryList(
+                        history = history,
+                        onItemClick = {
+                            query = it
+                            searchViewModel.onSearchQueryChanged(it)
+                        },
+                        onClearHistory = { searchViewModel.clearHistory() }
+                    )
                 } else if (query.isNotBlank()) {
                     NoResultsPlaceholder()
                 }
@@ -164,21 +168,38 @@ fun SearchScreen(
 }
 
 @Composable
-fun SearchHistoryList(history: List<String>, onItemClick: (String) -> Unit) {
-    Text("История поиска", style = MaterialTheme.typography.titleMedium)
-    Spacer(modifier = Modifier.height(8.dp))
-    LazyColumn {
-        items(history) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable { onItemClick(it) }
-                    .padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Icons.Default.History, contentDescription = "History icon")
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(it)
+fun SearchHistoryList(
+    history: List<String>,
+    onItemClick: (String) -> Unit,
+    onClearHistory: () -> Unit
+) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("История поиска", style = MaterialTheme.typography.titleMedium)
+            if (history.isNotEmpty()) {
+                TextButton(onClick = onClearHistory) {
+                    Text(stringResource(R.string.clear_history))
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        LazyColumn(modifier = Modifier.weight(1f)) {
+            items(history) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onItemClick(it) }
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(imageVector = Icons.Default.History, contentDescription = "History icon")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(it)
+                }
             }
         }
     }
