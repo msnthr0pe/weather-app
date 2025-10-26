@@ -67,6 +67,7 @@ class WeatherViewModel : ViewModel() {
                     feelsLike = "Feels like ${weatherResponse.main.feelsLike.toInt()}°C"
                 )
                 _cities.add(newCity)
+                currentIndex = _cities.lastIndex
             } catch (e: Exception) {
                 // Handle error
             }
