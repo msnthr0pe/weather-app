@@ -23,8 +23,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.weatherapp.BottomNavItem
 import com.example.weatherapp.R
 import com.example.weatherapp.viewmodel.SearchUiState
 import com.example.weatherapp.viewmodel.SearchViewModel
@@ -121,7 +123,16 @@ fun SearchScreen(
                                 city = location.name,
                                 country = location.country,
                                 state = location.state ?: "Unknown",
-                                onAddClick = { weatherViewModel.addCity(location) }
+                                onAddClick = {
+                                    weatherViewModel.addCity(location)
+                                    navController.navigate(BottomNavItem.Weather.route) {
+                                        popUpTo(navController.graph.findStartDestination().id) {
+                                            saveState = true
+                                        }
+                                        launchSingleTop = true
+                                        restoreState = true
+                                    }
+                                }
                             )
                         }
                     }
